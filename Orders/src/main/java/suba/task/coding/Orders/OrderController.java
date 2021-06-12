@@ -15,15 +15,27 @@ public class OrderController {
     public Object order(@RequestParam(value = "Apple", defaultValue = "0") String apple_count, @RequestParam(value = "Orange", defaultValue = "0") String orange_count){
         int apple = Integer.parseInt(apple_count);
         int orange = Integer.parseInt(orange_count);
-        if((apple<0)||(orange<0)) return "Invaild input";
 
+        if((apple<0)||(orange<0)) return "Invaild input";
         if((apple+orange)<=0) return "NO item in the order";
 
             double apple_total = (apple*.60);
             double orange_total = (orange*.25);
           return   new FruitOrder((int) counter.incrementAndGet(),apple,orange,apple_total,orange_total);
 
-       // return   new Order((int) counter.incrementAndGet(),apple,orange,0,0);
+    }
+
+    @GetMapping("/neworderwithoffer")
+    public Object neworderwithoffer(@RequestParam(value = "Apple", defaultValue = "0") String apple_count, @RequestParam(value = "Orange", defaultValue = "0") String orange_count){
+        int apple = Integer.parseInt(apple_count);
+        int orange = Integer.parseInt(orange_count);
+
+        if((apple<0)||(orange<0)) return "Invaild input";
+        if((apple+orange)<=0) return "NO item in the order";
+
+        double apple_total = (((apple/2)+(apple%2))*.60);
+        double orange_total = (((orange/3)*.5)+((orange%3)*.25));
+        return   new FruitOrder((int) counter.incrementAndGet(),apple,orange,apple_total,orange_total);
 
     }
 

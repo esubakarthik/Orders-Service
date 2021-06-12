@@ -79,6 +79,63 @@ class OrdersApplicationTests {
 		assertEquals("NO item in the order",response);
 	}
 
+	// Step 2 test:
+	@Test
+	void WithofferAppleeven() throws IOException {
+		String response = load("http://localhost:8080/neworderwithoffer?Apple=6");
+		assertEquals("1.80",df2.format(getordercost(response)));
+	}
+	@Test
+	void WithofferAppleodd() throws IOException {
+		String response = load("http://localhost:8080/neworderwithoffer?Apple=7");
+		assertEquals("2.40",df2.format(getordercost(response)));
+	}
+	@Test
+	void WithofferAppleSingle() throws IOException {
+		String response = load("http://localhost:8080/neworderwithoffer?Apple=1");
+		assertEquals("0.60",df2.format(getordercost(response)));
+	}
+	void WithofferAppleDouble() throws IOException {
+		String response = load("http://localhost:8080/neworderwithoffer?Apple=2");
+		assertEquals("0.60",df2.format(getordercost(response)));
+	}
+
+
+
+	@Test
+	void WithofferOrangesx3() throws IOException {
+		String response = load("http://localhost:8080/neworderwithoffer?Orange=9");
+		assertEquals("1.50",df2.format(getordercost(response)));
+	}
+	@Test
+	void WithofferOrangesx3plus1() throws IOException {
+		String response = load("http://localhost:8080/neworderwithoffer?Orange=10");
+		assertEquals("1.75",df2.format(getordercost(response)));
+	}
+	@Test
+	void WithofferOrangesx3minus1() throws IOException {
+		String response = load("http://localhost:8080/neworderwithoffer?Orange=8");
+		assertEquals("1.50",df2.format(getordercost(response)));
+	}
+	@Test
+	void WithofferOrangesx3Single() throws IOException {
+		String response = load("http://localhost:8080/neworderwithoffer?Orange=1");
+		assertEquals("0.25",df2.format(getordercost(response)));
+	}
+	@Test
+	void WithofferOrangesdouble() throws IOException {
+		String response = load("http://localhost:8080/neworderwithoffer?Orange=2");
+		assertEquals("0.50",df2.format(getordercost(response)));
+	}
+	@Test
+	void WithofferOrangesx3triple() throws IOException {
+		String response = load("http://localhost:8080/neworderwithoffer?Orange=3");
+		assertEquals("0.50",df2.format(getordercost(response)));
+	}
+
+
+
+
 	@Test
 	void contextLoads() {
 	}
