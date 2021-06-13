@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
@@ -51,14 +50,13 @@ public class OrderController {
     {
         return fruitOrderService.GetAllOrder();
     }
+
     @GetMapping("getbyorderid")
     public Object getbyorderid(@RequestParam String id)
     {
         FruitOrder fruitOrder =   fruitOrderService.getByOrderId(Integer.parseInt(id));
         if(fruitOrder == null) return "No order exists with that order id";
         return fruitOrder;
-
-
 
     }
 

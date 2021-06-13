@@ -2,33 +2,19 @@ package suba.task.coding.Orders;
 
 
 import javax.persistence.*;
-import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-public class FruitOrder {
+public class FruitOrder  {
     @Id
     int order_Number;
     double total_cost;
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride( name = "count", column = @Column(name = "apple_count")),
-            @AttributeOverride( name = "total", column = @Column(name = "apple_totalcost")),
-    })
-    Item Apples;
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride( name = "count", column = @Column(name = "orange_count")),
-            @AttributeOverride( name = "total", column = @Column(name = "orange_totalcost"))
-    })
-    Item Oranges;
+    @ElementCollection
+    List<Item> items = new ArrayList<Item>();
 
-
-    public Item getApples() {
-        return Apples;
-    }
-
-    public Item getOranges() {
-        return Oranges;
+    public List<Item> getItems() {
+        return items;
     }
 
     public FruitOrder() {
@@ -36,12 +22,16 @@ public class FruitOrder {
 
     public FruitOrder(int order_Number, int apple_count, int orange_count, double apple_total, double orange_total) {
         this.order_Number = order_Number;
-        Apples = new Item(apple_count,apple_total);
-        Oranges = new Item(orange_count, orange_total);
-        this.total_cost= orange_total+apple_total;
+        Item Apples = new Item("Apples",apple_count,apple_total);
+        Item Oranges = new Item("Oranges",orange_count, orange_total);
+        items.add(Apples);
+        items.add(Oranges);
+        this.total_cost=0;
+        for (Item item : items){ this.total_cost += item.total;}
 
     }
 
+//getters & setters
     public void setOrder_Number(int order_Number) {
         this.order_Number = order_Number;
     }
@@ -62,19 +52,20 @@ public class FruitOrder {
 @Embeddable
 class Item{
 
-
+    String name;
     int count;
     double total;
 
     public Item() {
     }
 
-    public Item( int count, double total_itemcost) {
-
+    public Item( String name,int count, double total_itemcost) {
+        this.name = name;
         this.count = count;
         this.total = total_itemcost;
     }
 
+    public String getName() { return name; }
 
     public int getCount() {
         return count;

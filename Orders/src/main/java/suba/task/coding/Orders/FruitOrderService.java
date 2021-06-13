@@ -8,13 +8,13 @@ import java.util.ArrayList;
 public class FruitOrderService {
     @Autowired
     DataRepo datarepo;
-
+//get all orders
         public ArrayList<FruitOrder> GetAllOrder() {
             ArrayList<FruitOrder> fruitorders = new ArrayList<FruitOrder>();
         datarepo.findAll().forEach(fruitOrder -> fruitorders.add(fruitOrder));
             return fruitorders;
         }
-
+//get entries based on id
     public FruitOrder getByOrderId(int id)
     {
         try {
@@ -22,9 +22,8 @@ public class FruitOrderService {
         }catch (java.util.NoSuchElementException no){
             return null;
         }
-
     }
-
+//save entries to database
     public void saveOrUpdate(FruitOrder fruitOrder)
     {
         datarepo.save(fruitOrder);
