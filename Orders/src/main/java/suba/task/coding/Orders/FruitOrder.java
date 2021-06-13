@@ -9,10 +9,19 @@ public class FruitOrder {
     @Id
     int order_Number;
     double total_cost;
-    @OneToOne()
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride( name = "count", column = @Column(name = "apple_count")),
+            @AttributeOverride( name = "total", column = @Column(name = "apple_totalcost")),
+    })
     Item Apples;
-    @OneToOne()
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride( name = "count", column = @Column(name = "orange_count")),
+            @AttributeOverride( name = "total", column = @Column(name = "orange_totalcost"))
+    })
     Item Oranges;
+
 
     public Item getApples() {
         return Apples;
@@ -22,10 +31,13 @@ public class FruitOrder {
         return Oranges;
     }
 
-    public FruitOrder(int order_Number, int apple_count, int orange_count,double apple_total,double orange_total) {
+    public FruitOrder() {
+    }
+
+    public FruitOrder(int order_Number, int apple_count, int orange_count, double apple_total, double orange_total) {
         this.order_Number = order_Number;
-        Apples = new Item("Apple",apple_count,apple_total);
-        Oranges = new Item("Orange",orange_count, orange_total);
+        Apples = new Item(apple_count,apple_total);
+        Oranges = new Item(orange_count, orange_total);
         this.total_cost= orange_total+apple_total;
 
     }
@@ -47,15 +59,18 @@ public class FruitOrder {
     }
 
 }
-@Entity
+@Embeddable
 class Item{
-    @Id
-    String name;
+
+
     int count;
     double total;
 
-    public Item(String name, int count,double total_itemcost) {
-        this.name= name;
+    public Item() {
+    }
+
+    public Item( int count, double total_itemcost) {
+
         this.count = count;
         this.total = total_itemcost;
     }

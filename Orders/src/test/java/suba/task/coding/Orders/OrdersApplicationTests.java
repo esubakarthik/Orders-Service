@@ -15,7 +15,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.text.DecimalFormat;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class OrdersApplicationTests {
@@ -128,10 +128,35 @@ class OrdersApplicationTests {
 		assertEquals("0.50",df2.format(getordercost(response)));
 	}
 	@Test
-	void WithofferOrangesx3triple() throws IOException {
+	void WithofferOrangestriple() throws IOException {
 		String response = load("http://localhost:8080/neworderwithoffer?Orange=3");
 		assertEquals("0.50",df2.format(getordercost(response)));
 	}
+// Task 3 checks
+	@Test
+	void checkgetallorder() throws IOException {
+		String response = load("http://localhost:8080/getallorders");
+		assertNotEquals("[]",response);
+	}
+	@Test
+	void checkorderbyid() throws IOException {
+		String response = load("http://localhost:8080/neworderwithoffer?Orange=23"); //to add atleast one record
+		 response = load("http://localhost:8080/getbyorderid?id=1");
+		ObjectMapper mapper = new ObjectMapper();
+		JsonFactory factory = mapper.getFactory();
+		JsonParser parser = factory.createParser(response);
+		JsonNode actualObj = mapper.readTree(parser);
+		 int orderno = actualObj.get("order_Number").asInt();
+		assertEquals(1,orderno);
+	}
+	@Test
+	void checkorderbyincorrectid() throws IOException {
+		String response = load("http://localhost:8080/getbyorderid?id=100000000");
+		assertEquals("No order exists with that order id",response);
+	}
+
+
+
 
 
 
